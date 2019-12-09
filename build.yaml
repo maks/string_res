@@ -11,4 +11,3 @@ builders:
         generate_for:
           include:
             - lib/**
-            - assets/**
