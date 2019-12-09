@@ -1,8 +1,9 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
+/// Builder for generating string constants
 library string_res;
 
-export 'src/string_res_base.dart';
+import 'package:build/build.dart';
+import 'src/builder.dart';
 
-// TODO: Export any libraries intended for clients of this package.
+/// Creates a [StringResourceBuilder]
+Builder stringResourceBuilder(BuilderOptions builderOptions) =>
+    const StringResourceBuilder();
