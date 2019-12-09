@@ -19,16 +19,10 @@ class StringResourceBuilder implements Builder {
     Map<String, Object> source;
     final outputId = buildStep.inputId.changeExtension('.dart');
     try {
-      print("PARSING: ${buildStep.inputId}");
       source = json.decode(await buildStep.readAsString(buildStep.inputId))
           as Map<String, Object>;
     } catch (err) {
-      source = {
-        'name': 'Text',
-        'params': {
-          '0': 'Error: invalid json',
-        },
-      };
+      source = {};
     }
     final output = StringBuffer();
     // write the header.
@@ -46,7 +40,6 @@ class StringResourceBuilder implements Builder {
     } catch (err) {
       outputString = err.toString();
     }
-    print("OUTPUT:\n $outputString");
     await buildStep.writeAsString(outputId, outputString);
   }
 
