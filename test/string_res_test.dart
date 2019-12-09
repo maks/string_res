@@ -16,9 +16,7 @@ void main() {
     final buffer = StringBuffer();
     generator.makeResource(json.decode(example) as Map<String, Object>, buffer);
 
-    expect(
-        buffer.toString(),
-        'static const first_name = "First Name";\n'
-        'static const log_in = "Log in";\n');
+    expect(buffer.toString(),
+        'static const FIRST_NAME = "first_name";\nstatic const LOG_IN = "log_in";\n');
   });
 }

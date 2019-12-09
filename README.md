@@ -1,19 +1,22 @@
-A library for Dart developers.
+A Dart Builder for creating a class with String constants from a JSON file.
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
 
 ## Usage
 
-A simple usage example:
+If using with json in assets folder need a build.yaml in *your* flutter app eg:
 
-```dart
-import 'package:string_res/string_res.dart';
+```yaml
+targets:
+    $default:
+      sources:            
+        - assets/I10n/en_US.json
 
-main() {
-  var awesome = new Awesome();
-}
 ```
+
+For Flutter run using standard command:
+`flutter packages pub run build_runner build`
+
+or with the new [hot-reload code-gen builder support](https://github.com/flutter/flutter/wiki/Code-generation-in-Flutter)
 
 ## Features and bugs
 

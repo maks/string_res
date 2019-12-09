@@ -19,6 +19,7 @@ class StringResourceBuilder implements Builder {
     Map<String, Object> source;
     final outputId = buildStep.inputId.changeExtension('.dart');
     try {
+      print("PARSING: ${buildStep.inputId}");
       source = json.decode(await buildStep.readAsString(buildStep.inputId))
           as Map<String, Object>;
     } catch (err) {
@@ -31,18 +32,11 @@ class StringResourceBuilder implements Builder {
     }
     final output = StringBuffer();
     // write the header.
-    output.write(r'''
-    
-    class SR {
-      
-''');
+    output.write('class SR {');
     StringConstGenerator().makeResource(source, output);
 
     // write the footer.
-    output.write(r'''
-      ;}
-    }
-''');
+    output.write('}');
 
     // Write the results to disk and format it.
     String outputString;
@@ -50,8 +44,9 @@ class StringResourceBuilder implements Builder {
     try {
       outputString = DartFormatter().format(output.toString()).toString();
     } catch (err) {
-      outputString = 'Text("string resource error formatting")';
+      outputString = err.toString();
     }
+    print("OUTPUT:\n $outputString");
     await buildStep.writeAsString(outputId, outputString);
   }
 
@@ -67,7 +62,7 @@ class StringConstGenerator {
 
   void makeResource(Map<String, Object> body, StringBuffer buffer) {
     body.keys.forEach((key) {
-      buffer.write('static const $key = "${body[key]}";\n');
+      buffer.write('static const ${key.toUpperCase()} = "$key";\n');
     });
   }
 }
