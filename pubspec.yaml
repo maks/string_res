@@ -1,8 +1,8 @@
 name: string_res
 description: A generator of strings constants from json
-# version: 1.0.0
-# homepage: https://www.example.com
-# author: Maksim Lin <maks@manichord.com>
+version: 1.0.0
+homepage: https://github.com/maks/string_res
+author: Maksim Lin <maks@manichord.com>
 
 environment:
   sdk: '>=2.5.0 <3.0.0'
