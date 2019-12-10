@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Fix bug with handling josn value with newline characters.
+
 ## 1.1.0
 
 - Add comments for each String const with value of the JSON property
