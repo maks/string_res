@@ -4,6 +4,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:build/build.dart';
 import 'package:dart_style/dart_style.dart';
@@ -26,7 +27,10 @@ class StringResourceBuilder implements Builder {
     }
     final output = StringBuffer();
     // write the header.
-    output.write('class SR {');
+    output.write('''
+    /// This is a auto-generated file DO NOT edit.
+    class SR {
+    ''');
     StringConstGenerator().makeResource(source, output);
 
     // write the footer.
@@ -51,10 +55,16 @@ class StringResourceBuilder implements Builder {
 
 @visibleForTesting
 class StringConstGenerator {
+  static const MAX_VALUE_COMMENT_LENGTH = 50;
+
   const StringConstGenerator();
 
   void makeResource(Map<String, Object> body, StringBuffer buffer) {
     body.keys.forEach((key) {
+      final value = body[key].toString();
+      final commentLength = min(MAX_VALUE_COMMENT_LENGTH, value.length);
+      final truncated = commentLength == MAX_VALUE_COMMENT_LENGTH ? '...' : '';
+      buffer.write('// ${value.substring(0, commentLength)}$truncated\n');
       buffer.write('static const ${key.toUpperCase()} = "$key";\n');
     });
   }
