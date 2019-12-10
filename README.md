@@ -22,4 +22,4 @@ or with the new [hot-reload code-gen builder support](https://github.com/flutter
 
 Please file feature requests and bugs at the [issue tracker][tracker].
 
-[tracker]: http://example.com/issues/replaceme
+[tracker]: https://github.com/maks/string_res/issues
