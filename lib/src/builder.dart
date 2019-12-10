@@ -61,7 +61,8 @@ class StringConstGenerator {
 
   void makeResource(Map<String, Object> body, StringBuffer buffer) {
     body.keys.forEach((key) {
-      final value = body[key].toString();
+      final value =
+          body[key].toString().replaceAll(RegExp(r"\n", multiLine: true), ' ');
       final commentLength = min(MAX_VALUE_COMMENT_LENGTH, value.length);
       final truncated = commentLength == MAX_VALUE_COMMENT_LENGTH ? '...' : '';
       buffer.write('// ${value.substring(0, commentLength)}$truncated\n');

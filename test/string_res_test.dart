@@ -17,6 +17,12 @@ const longExample = '''
 }
 ''';
 
+const formattedExample = r'''
+{
+    "first_name": "some tricky\nformatting"
+}
+''';
+
 void main() {
   test('can generate string consts', () {
     final generator = StringConstGenerator();
@@ -35,5 +41,15 @@ void main() {
 
     expect(buffer.toString(),
         '// First Name\nstatic const FIRST_NAME = "first_name";\n// This is a very long value, in fact it is long enou...\nstatic const VERY_LONG = "very_long";\n');
+  });
+
+  test('can generate when formatted values', () {
+    final generator = StringConstGenerator();
+    final buffer = StringBuffer();
+    generator.makeResource(
+        json.decode(formattedExample) as Map<String, Object>, buffer);
+
+    expect(buffer.toString(),
+        '// some tricky formatting\nstatic const FIRST_NAME = "first_name";\n');
   });
 }
