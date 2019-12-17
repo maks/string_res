@@ -1,3 +1,7 @@
+## 1.2.0
+
+- Move to using source JSON in assets folder as strings.json and output to lib/strings.dart 
+
 ## 1.1.1
 
 - Fix bug with handling josn value with newline characters.
