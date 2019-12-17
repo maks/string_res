@@ -3,15 +3,11 @@ A Dart Builder for creating a class with String constants from a JSON file.
 
 ## Usage
 
-If using with json in assets folder need a build.yaml in *your* flutter app eg:
+JSON file **MUST** be named `strings.json` and live somewhere within the `assets` top-level folder of your Flutter app project.
 
-```yaml
-targets:
-    $default:
-      sources:            
-        - assets/I10n/en_US.json
+The JSON file is expected to have a single top-level object whose properties will be used in the output.
 
-```
+The output will create a Class named `SR` in `lib/strings.dart` which will contain a static String constant for every property found in the top-level JSON object.
 
 For Flutter run using standard command:
 `flutter packages pub run build_runner build`

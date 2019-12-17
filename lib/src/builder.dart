@@ -1,26 +1,36 @@
-// Copyright 2019 Jonah Williams. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
-
+import 'package:glob/glob.dart';
 import 'package:build/build.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:meta/meta.dart';
+import 'package:path/path.dart' as path;
 
-/// A builder which outputs strings constants from json.
+/// A builder which outputs a Dart Class containing String constants for
+/// all the keys in the given JSON file
+/// The JSON file is assumed to have a single top-level object whose properties
+/// will be used in the output Strings constants
+/// The JSON file MUST be named `strings.json` and be found somewhere within the
+/// top-level Flutter assets folder
 class StringResourceBuilder implements Builder {
   const StringResourceBuilder();
+  static const OUTPUT_FILENAME = 'strings.dart';
+  static final _allFilesInLib = Glob('assets/**/strings.json');
 
   @override
   FutureOr<void> build(BuildStep buildStep) async {
-    /// Read the input source and parse it as JSON.
+    final files = <String>[];
+    AssetId inputId;
+    await for (final input in buildStep.findAssets(_allFilesInLib)) {
+      files.add(input.path);
+      inputId = input;
+    }
+
+    // Read the input source and parse it as JSON.
     Map<String, Object> source;
-    final outputId = buildStep.inputId.changeExtension('.dart');
     try {
-      source = json.decode(await buildStep.readAsString(buildStep.inputId))
+      source = json.decode(await buildStep.readAsString(inputId))
           as Map<String, Object>;
     } catch (err) {
       source = {};
@@ -44,13 +54,19 @@ class StringResourceBuilder implements Builder {
     } catch (err) {
       outputString = err.toString();
     }
-    await buildStep.writeAsString(outputId, outputString);
+    final outputId = _allFileOutput(buildStep);
+    return buildStep.writeAsString(outputId, outputString);
   }
 
   @override
   Map<String, List<String>> get buildExtensions => const {
-        '.json': ['.dart']
+        r'$lib$': <String>[OUTPUT_FILENAME]
       };
+
+  static AssetId _allFileOutput(BuildStep buildStep) {
+    return AssetId(
+        buildStep.inputId.package, path.join('lib', OUTPUT_FILENAME));
+  }
 }
 
 @visibleForTesting
@@ -62,7 +78,7 @@ class StringConstGenerator {
   void makeResource(Map<String, Object> body, StringBuffer buffer) {
     body.keys.forEach((key) {
       final value =
-          body[key].toString().replaceAll(RegExp(r"\n", multiLine: true), ' ');
+          body[key].toString().replaceAll(RegExp(r'\n', multiLine: true), ' ');
       final commentLength = min(MAX_VALUE_COMMENT_LENGTH, value.length);
       final truncated = commentLength == MAX_VALUE_COMMENT_LENGTH ? '...' : '';
       buffer.write('// ${value.substring(0, commentLength)}$truncated\n');
