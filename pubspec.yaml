@@ -2,7 +2,6 @@ name: string_res
 description: A Dart Builder for creating a class with String constants from a JSON file.
 version: 1.2.1
 homepage: https://github.com/maks/string_res
-author: Maksim Lin <maks@manichord.com>
 
 environment:
   sdk: '>=2.5.0 <3.0.0'
@@ -12,7 +11,9 @@ dependencies:
   build: ^1.2.2
   build_config: ^0.4.0
   dart_style: ^1.3.3
+  glob: ^1.2.0
+  path: ^1.6.4
 
 dev_dependencies:
   pedantic: ^1.9.0
-  test: 
+  test:
