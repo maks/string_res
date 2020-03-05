@@ -16,7 +16,7 @@ import 'package:path/path.dart' as path;
 class StringResourceBuilder implements Builder {
   const StringResourceBuilder();
   static const OUTPUT_FILENAME = 'strings.dart';
-  static final _allFilesInLib = Glob('assets/**/strings.json');
+  static final _allFilesInLib = Glob('assets/**strings.json');
 
   @override
   FutureOr<void> build(BuildStep buildStep) async {
